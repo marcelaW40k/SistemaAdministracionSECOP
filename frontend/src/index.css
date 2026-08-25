@@ -121,7 +121,7 @@ body {
 .barra-acciones .buscador { margin: 0; flex: 1; }
 .barra-acciones .buscador input { max-width: 320px; }
 
-/* --- Tabla de consulta (responsive con scroll horizontal en celular) --- */
+/* --- Tabla de consulta, responsive con scroll horizontal en celular --- */
 .tabla-wrapper { overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 table { border-collapse: collapse; width: 100%; min-width: 700px; }
 th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 0.88rem; vertical-align: middle;}
@@ -176,4 +176,200 @@ td a { color: #1e40af; }
 .badge-rol {
   background: #1e40af; color: white; padding: 0.15rem 0.6rem;
   border-radius: 12px; font-size: 0.75rem;
+}
+
+/* paginación */
+.paginacion-contenedor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.75rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.paginacion-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.paginacion-selector select {
+  margin-left: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.btn-paginacion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-paginacion:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.btn-paginacion:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginacion-texto {
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .paginacion-contenedor {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .paginacion-controles {
+    margin-left: 0;
+  }
+}
+
+/* Modal Overlay y Caja */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.modal-contenido {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-header h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.modal-icono-alerta {
+  background-color: #fef2f2;
+  color: #ef4444;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-cuerpo {
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.btn-peligro {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-peligro:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+.btn-peligro:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Toast Notificación de Éxito */
+.toast-exito {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 1100;
+  font-size: 0.875rem;
+  animation: slideUp 0.2s ease-out;
+}
+
+.toast-icono {
+  color: #22c55e;
+  flex-shrink: 0;
+}
+
+.toast-cerrar {
+  background: transparent;
+  border: none;
+  color: #166534;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  opacity: 0.7;
+}
+
+.toast-cerrar:hover {
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
