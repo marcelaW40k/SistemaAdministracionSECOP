@@ -97,21 +97,23 @@ export default function Cc2026Consultar() {
                     )}
                   </td>
                   {puedeEditarBorrar && (
-                    <td className="acciones-fila">
-                      <Link
-                        to={`/cc2026/editar/${encodeURIComponent(a.radicacion)}`}
-                        className="btn-icono btn-icono-editar"
-                        title="Editar"
-                      >
-                        <Pencil size={16} />
-                      </Link>
-                      <button
-                        className="btn-icono btn-icono-eliminar"
-                        onClick={() => handleEliminar(a.radicacion)}
-                        title="Eliminar"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                    <td className="acciones-fila" style={{ display: 'table-cell', verticalAlign: 'middle' }}>
+                      <div style={{display: 'flex'}}>
+                          <Link
+                          to={`/cc2026/editar/${encodeURIComponent(a.radicacion)}`}
+                          className="btn-icono btn-icono-editar"
+                          title="Editar"
+                        >
+                          <Pencil size={16} />
+                        </Link>
+                        <button
+                          className="btn-icono btn-icono-eliminar"
+                          onClick={() => handleEliminar(a.radicacion)}
+                          title="Eliminar"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </td>
                   )}
                 </tr>

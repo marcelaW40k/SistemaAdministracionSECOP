@@ -84,7 +84,7 @@ export default function SecopFormulario() {
             <input name="fechaPresentacionOfertas" value={form.fechaPresentacionOfertas || ''} onChange={handleChange} />
           </label>
           <label>
-            URL detalle (Column-8 Url)
+            URL detalle
             <input name="urlDetalle" value={form.urlDetalle || ''} onChange={handleChange} />
           </label>
 
