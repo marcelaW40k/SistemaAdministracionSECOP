@@ -20,9 +20,20 @@ export default function SecopFormulario() {
 
   useEffect(() => {
     if (esEdicion) {
-      api.get(`/secop/${encodeURIComponent(referencia)}`)
-        .then((res) => setForm(res.data))
-    }
+      console.log("referencia", referencia)
+      const paramId = referencia || id
+      if (paramId && paramId !== 'undefined') {
+        api.get(`/secop/${encodeURIComponent(paramId)}`)
+          .then((res) => {
+            if (res.data) {
+              setForm(res.data)
+            }
+          })
+          .catch((err) => {
+            console.error("Error al cargar los datos de SECOP:", err)
+          })
+        }
+      }
   }, [referencia, esEdicion])
 
   function handleChange(e) {
