@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
-import { Pencil, Trash2, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle2, X } from 'lucide-react';
+import {
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  AlertTriangle,
+  CheckCircle2,
+  X,
+} from "lucide-react";
 
 export default function SecopConsultar() {
   const [procesos, setProcesos] = useState([]);
@@ -14,15 +22,26 @@ export default function SecopConsultar() {
   const [procesoAEliminar, setProcesoAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [mensajeExito, setMensajeExito] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
     api
       .get("/secop")
       .then((res) => setProcesos(res.data))
       .finally(() => setCargando(false));
-  }, []);
 
- 
+    if (location.state?.mensaje) {
+      setMensajeExito(location.state.mensaje);
+      window.history.replaceState({}, document.title);
+
+      const timer = setTimeout(() => setMensajeExito(""), 4000);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
+    }
+  }, [location]);
+
+
   const handleBusquedaChange = (e) => {
     setBusqueda(e.target.value);
     setPaginaActual(1);
@@ -46,9 +65,13 @@ export default function SecopConsultar() {
     setEliminando(true);
     try {
       await api.delete(`/secop/${encodeURIComponent(procesoAEliminar)}`);
-      setProcesos((prev) => prev.filter((p) => p.referencia !== procesoAEliminar));
-      
-      setMensajeExito(`El proceso ${procesoAEliminar} fue eliminado correctamente.`);
+      setProcesos((prev) =>
+        prev.filter((p) => p.referencia !== procesoAEliminar),
+      );
+
+      setMensajeExito(
+        `El proceso ${procesoAEliminar} fue eliminado correctamente.`,
+      );
       setTimeout(() => setMensajeExito(""), 4000);
     } catch (error) {
       console.error("Error al eliminar:", error);
@@ -135,8 +158,14 @@ export default function SecopConsultar() {
                         )}
                       </td>
                       {puedeEditarBorrar && (
-                        <td className="acciones-fila" style={{ display: 'table-cell', verticalAlign: 'middle' }}>
-                          <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <td
+                          className="acciones-fila"
+                          style={{
+                            display: "table-cell",
+                            verticalAlign: "middle",
+                          }}
+                        >
+                          <div style={{ display: "flex", gap: "0.5rem" }}>
                             <Link
                               to={`/secop/editar/${encodeURIComponent(p.referencia)}`}
                               className="btn-icono btn-icono-editar"
@@ -158,7 +187,10 @@ export default function SecopConsultar() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={puedeEditarBorrar ? 6 : 5} style={{ textAlign: 'center', padding: '1.5rem' }}>
+                    <td
+                      colSpan={puedeEditarBorrar ? 6 : 5}
+                      style={{ textAlign: "center", padding: "1.5rem" }}
+                    >
                       No se encontraron registros.
                     </td>
                   </tr>
@@ -168,7 +200,8 @@ export default function SecopConsultar() {
           </div>
           <div className="paginacion-contenedor">
             <div className="paginacion-info">
-              Mostrando {filtrados.length === 0 ? 0 : indicePrimer + 1} - {Math.min(indiceUltimo, filtrados.length)} de {filtrados.length}
+              Mostrando {filtrados.length === 0 ? 0 : indicePrimer + 1} -{" "}
+              {Math.min(indiceUltimo, filtrados.length)} de {filtrados.length}
             </div>
 
             <div className="paginacion-controles">
@@ -215,7 +248,10 @@ export default function SecopConsultar() {
       )}
 
       {procesoAEliminar && (
-        <div className="modal-overlay" onClick={() => !eliminando && setProcesoAEliminar(null)}>
+        <div
+          className="modal-overlay"
+          onClick={() => !eliminando && setProcesoAEliminar(null)}
+        >
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div className="modal-icono-alerta">
@@ -224,7 +260,9 @@ export default function SecopConsultar() {
               <h2>¿Confirmar eliminación?</h2>
             </div>
             <p className="modal-cuerpo">
-              ¿Estás seguro de que deseas eliminar el proceso <strong>{procesoAEliminar}</strong>? Esta acción no se puede deshacer.
+              ¿Estás seguro de que deseas eliminar el proceso{" "}
+              <strong>{procesoAEliminar}</strong>? Esta acción no se puede
+              deshacer.
             </p>
             <div className="modal-acciones">
               <button
@@ -239,7 +277,7 @@ export default function SecopConsultar() {
                 onClick={confirmarEliminacion}
                 disabled={eliminando}
               >
-                {eliminando ? 'Eliminando...' : 'Eliminar'}
+                {eliminando ? "Eliminando..." : "Eliminar"}
               </button>
             </div>
           </div>

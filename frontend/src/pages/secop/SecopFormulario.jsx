@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import api from '../../services/api'
 
+
 export default function SecopFormulario() {
   const { referencia } = useParams()
   const esEdicion = Boolean(referencia)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const [form, setForm] = useState({
@@ -19,10 +21,9 @@ export default function SecopFormulario() {
   })
 
   useEffect(() => {
-    if (esEdicion) {
-      const paramId = referencia || id
-      if (paramId && paramId !== 'undefined') {
-        api.get(`/secop/${encodeURIComponent(paramId)}`)
+   
+      if (esEdicion && referencia !== 'undefined') {
+        api.get(`/secop/${encodeURIComponent(referencia)}`)
           .then((res) => {
             if (res.data) {
               setForm(res.data)
@@ -32,7 +33,7 @@ export default function SecopFormulario() {
             console.error("Error al cargar los datos de SECOP:", err)
           })
         }
-      }
+  
   }, [referencia, esEdicion])
 
   function handleChange(e) {
@@ -41,18 +42,35 @@ export default function SecopFormulario() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (esEdicion) {
+    try {
+      if (esEdicion) {
       await api.put(`/secop/${encodeURIComponent(referencia)}`, form)
+        navigate('/secop', {
+            state: { mensaje: `El registro ${referencia} fue actualizado correctamente.` }
+        })
     } else {
       await api.post('/secop', form)
+      navigate('/secop', {
+          state: { mensaje: `El registro ${form.referencia} fue creado correctamente.` }
+        })
     }
-    navigate('/secop')
+    }
+    catch (err) {
+    if (err.response?.status === 409) {
+      setError(`Ya existe un registro con la referencia "${form.referencia}". Usa una referencia distinta.`)
+    } else {
+      setError('Ocurrió un error al guardar el registro. Intenta de nuevo.')
+    }
+  }
+
   }
 
   return (
     <div className="contenedor">
       <h1>SECOP — {esEdicion ? 'Modificar' : 'Crear'} registro</h1>
+     
       <div className="form-box">
+         {error && <p style={{ color: '#dc2626', marginBottom: '1rem' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>
             Referencia (llave, no se puede editar)

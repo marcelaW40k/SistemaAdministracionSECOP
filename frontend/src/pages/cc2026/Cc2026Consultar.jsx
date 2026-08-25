@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import { Pencil, Trash2, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle2, X } from 'lucide-react';
@@ -14,13 +14,24 @@ export default function Cc2026Consultar() {
   const [actuacionAEliminar, setActuacionAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [mensajeExito, setMensajeExito] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
     api
       .get("/cc2026")
       .then((res) => setActuaciones(res.data))
       .finally(() => setCargando(false));
-  }, []);
+
+      if (location.state?.mensaje) {
+      setMensajeExito(location.state.mensaje);
+      window.history.replaceState({}, document.title);
+
+      const timer = setTimeout(() => setMensajeExito(""), 4000);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
+    }
+  }, [location]);
 
   const handleBusquedaChange = (e) => {
     setBusqueda(e.target.value);
