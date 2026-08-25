@@ -1,0 +1,179 @@
+
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f4f6f8;
+  color: #1a1a1a;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* --- Navbar --- */
+.navbar {
+  background: #1e293b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1rem;
+  gap: 0.5rem;
+}
+.navbar a { color: white; text-decoration: none; font-weight: 500; }
+.navbar .navbar-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+.navbar .navbar-user { font-size: 0.85rem; opacity: 0.85; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.navbar button {
+  background: #ef4444; color: white; border: none;
+  padding: 0.35rem 0.75rem; border-radius: 4px; cursor: pointer;
+}
+
+/* En pantallas medianas/grandes (tablet+), navbar en una sola fila */
+@media (min-width: 768px) {
+  .navbar { flex-direction: row; justify-content: space-between; align-items: center; }
+}
+
+/* --- Home --- */
+.home-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+@media (min-width: 640px) {
+  .home-cards { grid-template-columns: 1fr 1fr; }
+}
+.home-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  text-decoration: none;
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease;
+}
+.home-card:hover { transform: translateY(-4px); }
+.home-card h2 { margin: 0 0 0.5rem 0; color: #1e40af; }
+
+/* --- Formularios --- */
+.form-box {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.form-box label { display: block; margin-bottom: 0.9rem; font-size: 0.9rem; }
+.form-box input, .form-box textarea {
+  width: 100%; padding: 0.5rem; margin-top: 0.25rem;
+  border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.95rem;
+}
+.form-box textarea { min-height: 80px; resize: vertical; }
+.form-actions { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primario {
+  background: #1e40af;
+  color: white;
+  box-shadow: 0 2px 6px rgba(30, 64, 175, 0.35);
+}
+.btn-primario:hover { background: #1d3a99; box-shadow: 0 4px 10px rgba(30, 64, 175, 0.45); }
+
+.btn-peligro { background: #dc2626; color: white; }
+.btn-peligro:hover { background: #c01f1f; }
+
+.btn-secundario { background: #e2e8f0; color: #1a1a1a; }
+.btn-secundario:hover { background: #cbd5e1; }
+
+.barra-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem 0;
+}
+@media (min-width: 640px) {
+  .barra-acciones {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.barra-acciones .buscador { margin: 0; flex: 1; }
+.barra-acciones .buscador input { max-width: 320px; }
+
+/* --- Tabla de consulta (responsive con scroll horizontal en celular) --- */
+.tabla-wrapper { overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+table { border-collapse: collapse; width: 100%; min-width: 700px; }
+th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 0.88rem; vertical-align: middle;}
+th { background: #f1f5f9; position: sticky; top: 0; }
+tr:hover { background: #f8fafc; }
+td a { color: #1e40af; }
+
+.buscador { margin: 1rem 0; }
+.buscador input {
+  width: 100%; max-width: 350px; padding: 0.55rem;
+  border: 1px solid #cbd5e1; border-radius: 6px;
+}
+
+/*
+  Requisito d.iii: el rol Consulta NO puede copiar texto en pantalla.
+  Esta clase se aplica condicionalmente segun el rol logueado
+  (ver SecopConsultar.jsx / Cc2026Consultar.jsx).
+*/
+.no-copiar {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.acciones-fila {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  height: 100%;
+  min-height: 34px;
+}
+.btn-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  text-decoration: none;
+}
+.btn-icono:hover { transform: translateY(-1px); }
+.btn-icono:active { transform: translateY(0); }
+
+.btn-icono-editar { background: #e2e8f0; color: #1e40af; margin-right: 5px;}
+.btn-icono-editar:hover { background: #cbd5e1; }
+
+.btn-icono-eliminar { background: #fee2e2; color: #dc2626; }
+.btn-icono-eliminar:hover { background: #fecaca; }
+.badge-rol {
+  background: #1e40af; color: white; padding: 0.15rem 0.6rem;
+  border-radius: 12px; font-size: 0.75rem;
+}
