@@ -30,24 +30,51 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configure(http))
+                .sessionManagement(sm ->
+                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
                         .requestMatchers("/api/auth/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/api/**")
-                        .hasAnyRole("ADMINISTRADOR", "DIGITADOR", "CONSULTA")
+                        .hasAnyRole(
+                                "ADMINISTRADOR",
+                                "DIGITADOR",
+                                "CONSULTA"
+                        )
+
                         .requestMatchers(HttpMethod.POST, "/api/**")
-                        .hasAnyRole("ADMINISTRADOR", "DIGITADOR")
+                        .hasAnyRole(
+                                "ADMINISTRADOR",
+                                "DIGITADOR"
+                        )
+
                         .requestMatchers(HttpMethod.PUT, "/api/**")
                         .hasRole("ADMINISTRADOR")
+
                         .requestMatchers(HttpMethod.DELETE, "/api/**")
                         .hasRole("ADMINISTRADOR")
+
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
