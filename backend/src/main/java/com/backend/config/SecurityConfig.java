@@ -28,7 +28,7 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
 
-    @Bean
+  @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
@@ -36,22 +36,44 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-
                         .requestMatchers(HttpMethod.GET, "/api/**")
-                        .hasAnyRole("ADMINISTRADOR", "DIGITADOR", "CONSULTA")
+                            .hasAnyRole("ADMINISTRADOR", "DIGITADOR", "CONSULTA")
                         .requestMatchers(HttpMethod.POST, "/api/**")
-                        .hasAnyRole("ADMINISTRADOR", "DIGITADOR")
+                            .hasAnyRole("ADMINISTRADOR", "DIGITADOR")
                         .requestMatchers(HttpMethod.PUT, "/api/**")
-                        .hasRole("ADMINISTRADOR")
+                            .hasRole("ADMINISTRADOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/**")
-                        .hasRole("ADMINISTRADOR")
+                            .hasRole("ADMINISTRADOR")
+                            
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Especificar explícitamente los orígenes permitidos
+        config.setAllowedOrigins(List.of(
+                "https://determined-connection-production-5df4.up.railway.app",
+                "http://localhost:5173",
+                "http://localhost:3000"
+        ));
+        
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean
