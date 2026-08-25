@@ -99,7 +99,7 @@ export default function Cc2026Consultar() {
                   {puedeEditarBorrar && (
                     <td className="acciones-fila">
                       <Link
-                        to={`/secop/editar/${encodeURIComponent(a.referencia)}`}
+                        to={`/cc2026/editar/${encodeURIComponent(a.radicacion)}`}
                         className="btn-icono btn-icono-editar"
                         title="Editar"
                       >
@@ -107,7 +107,7 @@ export default function Cc2026Consultar() {
                       </Link>
                       <button
                         className="btn-icono btn-icono-eliminar"
-                        onClick={() => handleEliminar(a.referencia)}
+                        onClick={() => handleEliminar(a.radicacion)}
                         title="Eliminar"
                       >
                         <Trash2 size={16} />

@@ -20,7 +20,6 @@ export default function SecopFormulario() {
 
   useEffect(() => {
     if (esEdicion) {
-      console.log("referencia", referencia)
       const paramId = referencia || id
       if (paramId && paramId !== 'undefined') {
         api.get(`/secop/${encodeURIComponent(paramId)}`)

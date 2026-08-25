@@ -21,8 +21,15 @@ export default function Cc2026Formulario() {
 
   useEffect(() => {
     if (esEdicion) {
-      api.get(`/cc2026/${encodeURIComponent(radicacion)}`)
-        .then((res) => setForm(res.data))
+      const paramId = referencia || id;
+      if (paramId && paramId !== 'undefined') {
+           api.get(`/cc2026/${encodeURIComponent(radicacion)}`)
+            .then((res) => {
+              if(res.data){
+                setForm(res.data)
+              }
+            })
+      }
     }
   }, [radicacion, esEdicion])
 
