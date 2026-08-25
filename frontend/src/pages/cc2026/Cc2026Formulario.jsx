@@ -21,7 +21,7 @@ export default function Cc2026Formulario() {
 
   useEffect(() => {
     if (esEdicion) {
-      const paramId = referencia || id;
+      const paramId = radicacion || id;
       if (paramId && paramId !== 'undefined') {
            api.get(`/cc2026/${encodeURIComponent(radicacion)}`)
             .then((res) => {
