@@ -4,7 +4,16 @@ import axios from 'axios'
 const rawBaseURL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
 const api = axios.create({
+
   baseURL: rawBaseURL.endsWith('/api') ? rawBaseURL : `${rawBaseURL}/api`
+})
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 api.interceptors.response.use(
