@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Ajusta esta URL si tu backend Spring Boot corre en otro host/puerto
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api'
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api'  
 })
 
 api.interceptors.request.use((config) => {
