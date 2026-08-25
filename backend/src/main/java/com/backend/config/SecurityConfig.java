@@ -82,11 +82,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOriginPattern("*");
-        config.addAllowedOriginPattern(List.of("https://determined-connection-production-5df4.up.railway.app","http://localhost:5173", "http://localhost:3000"));
-        config.addAllowedOriginPattern(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.addAllowedOriginPattern(List.of("*"));
-        config.addAllowedOriginPattern(true);
+         config.setAllowedPattern("*");
+        config.setAllowedOrigins(List.of("https://determined-connection-production-5df4.up.railway.app","http://localhost:5173", "http://localhost:3000"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
